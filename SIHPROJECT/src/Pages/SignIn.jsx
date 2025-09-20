@@ -1,5 +1,5 @@
-  import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import navigate hook
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate(); // ✅ Initialize navigate
+  const navigate = useNavigate();
 
   const handleFocus = (field) => setIsFocused({ ...isFocused, [field]: true });
   const handleBlur = (field) => setIsFocused({ ...isFocused, [field]: false });
@@ -18,13 +18,12 @@ const SignIn = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Fake delay for UX (optional)
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/dashboard"); // ✅ Now works
+      console.log("Sign In:", { email, password, role });
+      navigate("/dashboard");
     }, 1000);
   };
-
 
   const handleDemoLogin = () => {
     setRole("patient");
@@ -34,18 +33,18 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50/70 via-amber-50/50 to-white px-4 relative overflow-hidden">
-      
+
       {/* Animated Background Elements */}
-      <div className="absolute top-10% left-5% w-24 h-24 bg-emerald-200 rounded-full blur-3xl opacity-30 animate-float"></div>
-      <div className="absolute top-60% left-70% w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute top-20% left-80% w-20 h-20 bg-green-200 rounded-full blur-3xl opacity-20 animate-float" style={{ animationDelay: '4s' }}></div>
-      
+      <div className="absolute top-[10%] left-[5%] w-24 h-24 bg-emerald-200 rounded-full blur-3xl opacity-30 animate-float"></div>
+      <div className="absolute top-[60%] left-[70%] w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute top-[20%] left-[80%] w-20 h-20 bg-green-200 rounded-full blur-3xl opacity-20 animate-float" style={{ animationDelay: '4s' }}></div>
+
       {/* Main Card */}
       <div className="relative w-full max-w-md bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20">
-        
+
         {/* Decorative top border */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-green-500 rounded-t-3xl"></div>
-        
+
         {/* Logo and Title */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl shadow-lg mb-4 transform transition-transform duration-500 hover:scale-105 hover:rotate-3">
@@ -85,14 +84,15 @@ const SignIn = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+
           {/* Email Field */}
           <div className="relative">
-            <label 
+            <label
               htmlFor="email"
               className={`absolute left-4 transition-all duration-300 pointer-events-none ${
-                isFocused.email || email ? 
-                'top-1 text-xs text-emerald-600 font-medium' : 
-                'top-3 text-gray-500 text-sm'
+                isFocused.email || email
+                  ? 'top-1 text-xs text-emerald-600 font-medium'
+                  : 'top-3 text-gray-500 text-sm'
               }`}
             >
               Email / Username
@@ -111,12 +111,12 @@ const SignIn = () => {
 
           {/* Password Field */}
           <div className="relative">
-            <label 
+            <label
               htmlFor="password"
               className={`absolute left-4 transition-all duration-300 pointer-events-none ${
-                isFocused.password || password ? 
-                'top-1 text-xs text-emerald-600 font-medium' : 
-                'top-3 text-gray-500 text-sm'
+                isFocused.password || password
+                  ? 'top-1 text-xs text-emerald-600 font-medium'
+                  : 'top-3 text-gray-500 text-sm'
               }`}
             >
               Password
@@ -163,8 +163,8 @@ const SignIn = () => {
               </div>
               <span className="ml-2 text-gray-600 select-none">Remember me</span>
             </label>
-            <a 
-              href="/forgot-password" 
+            <a
+              href="/forgot-password"
               className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors focus:outline-none focus:underline"
             >
               Forgot password?
@@ -243,6 +243,7 @@ const SignIn = () => {
           opacity: 1;
         }
       `}</style>
+
     </div>
   );
 };
