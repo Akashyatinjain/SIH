@@ -1,11 +1,14 @@
 // src/App.jsx
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import DietChartCard from "../Components/DietChartCard";
+import { useNavigate } from "react-router-dom";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
-
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate(); 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveFeature((prev) => (prev + 1) % 6);
@@ -43,37 +46,95 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-emerald-50 via-amber-50 to-slate-50">
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-8 py-5 shadow-sm bg-white/90 backdrop-blur-sm sticky top-0 z-40">
-        <div className="flex items-center">
-          <div className="bg-green-700 p-2 rounded-lg mr-3 shadow-md">
-            <span className="text-white text-2xl">🌿</span>
-          </div>
-          <h1 className="text-2xl font-bold text-green-800">AyurDietCare</h1>
+        <nav className="flex justify-between items-center px-6 md:px-8 py-5 shadow-sm bg-white/90 backdrop-blur-sm sticky top-0 z-40">
+      {/* Logo */}
+      <div className="flex items-center">
+        <div className="bg-green-700 p-2 rounded-lg mr-2 shadow-md">
+          <span className="text-white text-2xl">🌿</span>
         </div>
-        <div className="space-x-3">
+        <h1 className="text-xl md:text-2xl font-bold text-green-800">AyurDietCare</h1>
+      </div>
+
+      {/* Desktop Buttons */}
+      <div className="hidden md:flex space-x-3">
+        <button
+          className="px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          onClick={() => navigate("/signup")} // redirect to SignUp page
+        >
+          Sign Up
+        </button>
+        <button
+          className="px-4 py-2 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg hover:from-gray-900 hover:to-black transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          onClick={() => navigate("/signin")} // redirect to SignIn page
+        >
+          Sign In
+        </button>
+        <button
+          className="px-4 py-2 bg-gradient-to-r from-amber-400 to-yellow-400 text-gray-900 font-semibold rounded-lg hover:from-amber-500 hover:to-yellow-500 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          onClick={() => navigate("/get-started")}
+        >
+          Get Started
+        </button>
+      </div>
+
+      {/* Mobile Menu Button */}
+      <button
+        className="md:hidden p-2 rounded-lg bg-gray-100"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-gray-800"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={
+              menuOpen
+                ? "M6 18L18 6M6 6l12 12" // X icon
+                : "M4 6h16M4 12h16M4 18h16" // Hamburger icon
+            }
+          />
+        </svg>
+      </button>
+
+      {/* Mobile Dropdown */}
+      {menuOpen && (
+        <div className="absolute top-[70px] left-0 w-full bg-white shadow-lg flex flex-col items-center gap-3 py-6 md:hidden z-30">
           <button
-            className="px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+            className="w-11/12 py-2 bg-green-600 text-white rounded-lg"
             onClick={() => {
-              setIsSignup(true);
-              setShowModal(true);
+              navigate("/signup"); // redirect
+              setMenuOpen(false);
             }}
           >
             Sign Up
           </button>
           <button
-            className="px-4 py-2 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg hover:from-gray-900 hover:to-black transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+            className="w-11/12 py-2 bg-gray-800 text-white rounded-lg"
             onClick={() => {
-              setIsSignup(false);
-              setShowModal(true);
+              navigate("/signin"); // redirect
+              setMenuOpen(false);
             }}
           >
             Sign In
           </button>
-          <button className="px-4 py-2 bg-gradient-to-r from-amber-400 to-yellow-400 text-gray-900 font-semibold rounded-lg hover:from-amber-500 hover:to-yellow-500 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+          <button
+            className="w-11/12 py-2 bg-amber-400 text-gray-900 font-semibold rounded-lg"
+            onClick={() => {
+              navigate("/get-started");
+              setMenuOpen(false);
+            }}
+          >
             Get Started
           </button>
         </div>
-      </nav>
+      )}
+    </nav>
 
       {/* Hero Section */}
       <header className="flex flex-col md:flex-row items-center justify-between px-8 py-16 md:py-24 relative overflow-hidden">
@@ -104,18 +165,7 @@ export default function App() {
         
         {/* Illustration */}
         <div className="mt-12 md:mt-0 relative z-10">
-          <div className="w-96 h-64 bg-gradient-to-br from-green-100 to-amber-100 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-dot-pattern opacity-10"></div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-300 rounded-full blur-xl opacity-30"></div>
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-amber-300 rounded-full blur-xl opacity-30"></div>
-            
-            <div className="text-center p-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4 shadow-md">
-                <span className="text-3xl text-white">📊</span>
-              </div>
-              <p className="text-gray-600 font-medium">Interactive Diet Chart Preview</p>
-            </div>
-          </div>
+          <DietChartCard />
         </div>
       </header>
 
